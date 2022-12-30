@@ -50,7 +50,11 @@ const validateUser = (user) => {
     firstName: Joi.string().min(0).max(50).required(),
     lastName: Joi.string().min(0).max(50).required(),
     password: Joi.string().min(5).max(50).required(),
-    email: Joi.string().email().min(5).max(255).required(),
+    email: Joi.string().email().min(5).max(255).required().messages({
+      'string.email' : 'Invalid email-id format!',
+      'string.min' : 'Invalid email-id format!',
+      'string.max': 'Invalid email-id format!'
+    }),
     contactNumber: Joi.number().min(1000000000).max(9999999999).required().messages({
       'number.min': 'Contact Number should be of 10 digits.',
       'number.max': 'Contact Number should be of 10 digits.'
