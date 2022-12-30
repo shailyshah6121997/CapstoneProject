@@ -10,12 +10,11 @@ exports.addAddress = async function (req, res) {
     }
 
     try {
-        const address = new Address({...req.body, user: user._id});
+        let userFound = await User.findOne({_id: user._id});
+        const address = new Address({...req.body, user: userFound});
         const savedAddress = await address.save();
         console.log(savedAddress);
         let savedAdd = {...savedAddress};
-        let userFound = await User.findOne({_id: user._id});
-        savedAdd._doc.user = userFound;
         return res.send(savedAdd._doc);
     } catch(ex) {
         return res.status(400).send(ex.message);
