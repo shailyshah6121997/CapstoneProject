@@ -28,21 +28,17 @@ exports.createOrder = async function (req, res) {
     // saving order and decrementing the available items for product
     try {
         const updatedProduct = await Product.findById(product);
-        const shippingAddress = await Address.findOne({user : req.user._id});
         const user = await User.findOne({_id : req.user._id});
 
         const order = new Order({address : req.body.addressId, product : updatedProduct, 
-            address: shippingAddress, user: user, amount: updatedProduct.price});
+            address: address, user: user, amount: updatedProduct.price});
         const savedOrder = await order.save();
 
         updatedProduct.availableItems -= 1;
         await updatedProduct.save();
         console.log(savedOrder);
         if (savedOrder) {
-            if (shippingAddress !== undefined)
-            {
-                savedOrder.address.user = user;
-            }
+            savedOrder.address.user = user;
         }
         return res.send(savedOrder);
     } catch(ex) {
