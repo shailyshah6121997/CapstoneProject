@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { AUTH_TOKEN } = require('../constants/constants');
 
+// Check if the user is logged in or not
 exports.auth = function (req, res, next) {
     const token = req.header(AUTH_TOKEN);
 

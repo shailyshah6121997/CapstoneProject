@@ -1,5 +1,6 @@
 const { Product } = require('../models/product.model');
 
+// Get all products
 exports.searchProducts = async function (req, res) {
     const { category, direction = "desc", sortBy = "_id", name="" } = req.query;
 
@@ -13,6 +14,7 @@ exports.searchProducts = async function (req, res) {
     res.send(products);
 }
 
+// Get all product categories
 exports.getProductCategories = async function (req, res) {
     try {
         const categories = await Product.find().select("category").distinct("category");
@@ -22,6 +24,7 @@ exports.getProductCategories = async function (req, res) {
       }
 }
 
+// Getting product by ID
 exports.getProductById = async function (req, res) {
     let product = await Product.findById(req.params.id);
 
@@ -33,6 +36,7 @@ exports.getProductById = async function (req, res) {
     res.send(product);
 }
 
+// Adding product
 exports.saveProduct = async function (req, res) {
     const requestBody = req.body;
 
@@ -45,9 +49,11 @@ exports.saveProduct = async function (req, res) {
     }
 }
 
+//Updating product details by ID
 exports.updateProductDetails = async function (req, res) {
     let product = await Product.findById(req.params.id);
 
+    // Check if product exists in the database
     if(!product) {
         res.status(404).send(`No Product found for ID - ${req.params.id}!`);
         return;
@@ -55,6 +61,7 @@ exports.updateProductDetails = async function (req, res) {
 
     const requestBody = req.body;
     
+    // updating the product
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, requestBody, {new: true});
         res.send(updatedProduct);
@@ -63,9 +70,12 @@ exports.updateProductDetails = async function (req, res) {
     }
 }
 
+// Deleting product by ID
 exports.deleteProduct = async function (req, res) {
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
+
+        // Check if product exists and was deleted or not
         if(!product) {
             res.status(404).send(`No Product found for ID - ${req.params.id}!`);
             return;
@@ -73,8 +83,6 @@ exports.deleteProduct = async function (req, res) {
         else {
             res.send(`Product with ID - ${req.params.id} deleted successfully!`);
         }
-
-        //res.send(product);
     } catch(ex) {
         return res.send(ex.message);
     }

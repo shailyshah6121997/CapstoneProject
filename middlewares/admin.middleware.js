@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+// Check if the logged in user is admin or not
 exports.admin = function (req, res, next) {
     const token = req.header('x-auth-token');
 

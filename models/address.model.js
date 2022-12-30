@@ -1,9 +1,8 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
 
-const Address = mongoose.model(
-  "address",
-  new mongoose.Schema({
+// Create schema for Addresses
+const addressSchema =  new mongoose.Schema({
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -35,9 +34,15 @@ const Address = mongoose.model(
       type: Number,
       required: true,
     },
-  }, { timestamps: true })
+  }, { timestamps: true });
+
+// Create Model for Addresses
+const Address = mongoose.model(
+  "address",
+  addressSchema
 );
 
+// Logic for vaidating address data provided in request
 const validateAddress = (address) => {
     const addressSchema = Joi.object({
       name: Joi.string().min(0).max(50).required(),

@@ -3,6 +3,7 @@ const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 const { ADMIN, USER } = require("../constants/constants");
 
+// Create a schema for Users
 const UserSchema =  new mongoose.Schema({
     firstName: {
       type: String,
@@ -41,10 +42,12 @@ const UserSchema =  new mongoose.Schema({
     },
   }, { timestamps: true });
 
+// Creating model for Users
 const User = mongoose.model(
   "user", UserSchema
 );
 
+// Logic for validating data passed in request
 const validateUser = (user) => {
   const userSchema = Joi.object({
     firstName: Joi.string().min(0).max(50).required(),
@@ -65,6 +68,7 @@ const validateUser = (user) => {
   return validationResult;
 };
 
+// Logic for validating password passed in request
 const validatePassword = ({ name, password }) => {
   if (password.toLowerCase().includes(name.toLowerCase())) {
     return { error: "Password cannot contain username" };

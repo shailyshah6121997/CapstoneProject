@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Create Schema for Orders
 const orderSchema = new mongoose.Schema({
     address: {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +27,7 @@ const orderSchema = new mongoose.Schema({
     }
   }, { timestamps: true })
 
+// Create model for Orders
 exports.Order = mongoose.model(
   "order", orderSchema
 );
